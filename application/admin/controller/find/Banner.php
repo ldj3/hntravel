@@ -17,7 +17,7 @@ class Banner extends Backend
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = model('Banner');
+        $this->model = model('Find');
     }
 
     /**
@@ -36,12 +36,12 @@ class Banner extends Backend
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $total = $this->model
-                    ->where($where)
+                    ->where('place','1')
                     ->order($sort, $order)
                     ->count();
 
             $list = $this->model
-                    ->where($where)
+                    ->where('place','1')
                     ->order($sort, $order)
                     ->limit($offset, $limit)
                     ->select();
@@ -60,10 +60,11 @@ class Banner extends Backend
     {
         $is_banner = $this->model
             ->where('place','1')
-            ->where('status','1')
+            ->where('status','normal')
             ->select();
         if (!empty($is_banner)) {
-            $this->error(__('首页轮播图只能一张', ''));
+            $this->error(__('首页轮播图只能一张'));
+            return;
         }
         
         if ($this->request->isPost())
@@ -84,7 +85,11 @@ class Banner extends Backend
                         $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.add' : true) : $this->modelValidate;
                         $this->model->validate($validate);
                     }
+                    $params['name'] = $params['title'] = 'banner';
+                    $params['place'] = 1;
                     $result = $this->model->allowField(true)->save($params);
+
+                    // print_r($result);exit;
                     if ($result !== false)
                     {
                         $this->success();

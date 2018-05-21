@@ -9,6 +9,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function($, undefine
                     add_url: 'find/banner/add',
                     edit_url: 'find/banner/edit',
                     del_url: 'find/banner/del',
+                    multi_url: 'find/banner/multi',
                     table: 'banner',
                 }
             });
@@ -34,8 +35,14 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function($, undefine
                             operate: false
                         },
                         {
-                            field: 'place',
+                            field: 'name',
                             title: __('轮播图')
+                        },
+                        {
+                            field: 'status',
+                            title: __('Status'),
+                            operate: false,
+                            formatter: Table.api.formatter.status
                         },
                         { field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate }
                     ]
