@@ -36,9 +36,15 @@
         </div>
     </div>
     <div class="form-group">
-    <label for="c-abstract" class="control-label col-xs-12 col-sm-2">{:__('评语')}:</label>
+        <label for="content" class="control-label col-xs-12 col-sm-2">{:__('星级')}:</label>
         <div class="col-xs-12 col-sm-8">
-    	<textarea id="c-abstract" class="form-control" name="row[abstract]" placeholder="用户评语" cols="50" rows="8"></textarea>
+            {:build_radios('row[stars]', ['1'=>__('1'), '2'=>__('2'), '3'=>__('3'), '4'=>__('4'), '5'=>__('5')])}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-abstract" class="control-label col-xs-12 col-sm-2">{:__('评语')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-abstract" class="form-control" name="row[abstract]" placeholder="用户评语" cols="50" rows="8"></textarea>
         </div>
     </div>
     <div class="form-group">

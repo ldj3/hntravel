@@ -29,9 +29,10 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function($, undefine
                         { checkbox: true },
                         { field: 'id', title: __('Id') },
                         { field: 'product_id', title: __('商品') },
-                        { field: 'user_name', title: __('用户名')},
+                        { field: 'user_name', title: __('用户名') },
                         { field: 'image', title: __('用户头像'), operate: false, formatter: Table.api.formatter.image },
-                        { field: 'time', title: __('点评时间')},
+                        { field: 'stars', title: __('星级') },
+                        { field: 'time', title: __('点评时间') },
                         { field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate }
                     ]
                 ]

@@ -70,6 +70,7 @@ class Index extends Api
     {
         $constant = self::constant;
         $sort_name= Db::table('hn_user_travel_log')
+        ->where('type',$_GET['type'])
         ->select();
         if (empty($sort_name)){
             $select_name = NULL;
@@ -85,40 +86,14 @@ class Index extends Api
                 $select_name[$k]['content'] = $v['content'];
             }
         }
-        
         $this->success('请求成功',$select_name);
     }
-    
+
     /**
-     * 商城
+     * 分类下所有产品
      *
      */
-    public function mall()
-    {
-        $constant = self::constant;
-        $sort_name= Db::table('hn_travel_home')
-        ->where('place','4')
-        ->where('status','normal')
-        ->select();
-        if (empty($sort_name)){
-            $select_name = NULL;
-        }else {
-            foreach ($sort_name as $k => $v) {
-                $select_name[$k]['image'] = $constant.$v['image'];
-                $select_name[$k]['title'] = $v['name'];
-                $select_name[$k]['second_title'] = $v['title'];
-                $select_name[$k]['abstract'] = $v['abstract'];
-            }
-        }
-        
-        $this->success('请求成功',$select_name);
-    }
-    
-    /**
-     * 商城
-     *
-     */
-    public function scenic()
+    public function product()
     {
         $constant = self::constant;
         $sort_name= Db::table('hn_travel_product')
@@ -129,17 +104,16 @@ class Index extends Api
             $select_name = NULL;
         }else {
             foreach ($sort_name as $k => $v) {
-                $v['tab'] = explode("，", $v['tab']);
+                $v['tab'] = explode('，',$v['tab']);
+                $select_name[$k]['id'] = $v['id'];
                 $select_name[$k]['image'] = $constant.$v['image'];
                 $select_name[$k]['title'] = $v['title'];
-                $select_name[$k]['type'] = $v['type'];
-                $select_name[$k]['abstract'] = $v['abstract'];
                 $select_name[$k]['tab'] = $v['tab'];
+                $select_name[$k]['abstract'] = $v['abstract'];
                 $select_name[$k]['ticket'] = $v['ticket'];
                 $select_name[$k]['address'] = $v['address'];
             }
         }
-        
         $this->success('请求成功',$select_name);
     }
     
@@ -160,6 +134,7 @@ class Index extends Api
                 $select_name[$k]['id'] = $v['id'];
                 $select_name[$k]['user_image'] = $constant.$v['image'];
                 $select_name[$k]['user_name'] = $v['user_name'];
+                $select_name[$k]['stars'] = $v['stars'];
                 $select_name[$k]['abstract'] = $v['abstract'];
                 $select_name[$k]['time'] = $v['time'];
             }
