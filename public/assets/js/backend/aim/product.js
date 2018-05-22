@@ -38,7 +38,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function($, undefine
                             title: __('标题')
                         },
                         {
-                            field: 'title',
+                            field: 'type',
                             title: __('分类')
                         },
                         {
@@ -55,7 +55,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function($, undefine
                             operate: false,
                             formatter: Table.api.formatter.status
                         },
-                        { field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate }
+                        {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
                 ]
             });

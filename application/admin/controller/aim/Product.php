@@ -4,6 +4,7 @@ namespace app\admin\controller\aim;
 
 use app\common\controller\Backend;
 use fast\Tree;
+use think\Db;
 
 /**
  * 首页轮播图
@@ -36,12 +37,12 @@ class Product extends Backend
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $total = $this->model
-                    ->where('place','1')
+                    ->where($where)
                     ->order($sort, $order)
                     ->count();
 
             $list = $this->model
-                    ->where('place','1')
+                    ->where($where)
                     ->order($sort, $order)
                     ->limit($offset, $limit)
                     ->select();
@@ -58,14 +59,6 @@ class Product extends Backend
      */
     public function add()
     {
-        $is_banner = $this->model
-            ->where('place','1')
-            ->where('status','normal')
-            ->select();
-        if (!empty($is_banner)) {
-            $this->error(__('首页轮播图只能一张'));
-            return;
-        }
         
         if ($this->request->isPost())
         {
@@ -85,11 +78,13 @@ class Product extends Backend
                         $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.add' : true) : $this->modelValidate;
                         $this->model->validate($validate);
                     }
-                    $params['name'] = $params['title'] = 'banner';
-                    $params['place'] = 1;
+//                  
+                    $sort_name= Db::table('hn_product_sort')
+                        ->where('id',$params['type'])
+                        ->find();
+                    $params['type'] = $sort_name['name'];
+                    $params['name'] = $params['title'];
                     $result = $this->model->allowField(true)->save($params);
-
-                    // print_r($result);exit;
                     if ($result !== false)
                     {
                         $this->success();
@@ -107,6 +102,66 @@ class Product extends Backend
             $this->error(__('Parameter %s can not be empty', ''));
         }
         return $this->view->fetch();
+    }
+    
+    /**
+     * 编辑
+     */
+    public function edit($ids = NULL)
+    {
+        $row = $this->model->get($ids);
+        $sort_name= Db::table('hn_product_sort')
+            ->where('name',$row['type'])
+            ->find();
+        $row['sort_id'] = $sort_name['id'];
+        if (!$row)
+            $this->error(__('No Results were found'));
+            $adminIds = $this->getDataLimitAdminIds();
+            if (is_array($adminIds))
+            {
+                if (!in_array($row[$this->dataLimitField], $adminIds))
+                {
+                    $this->error(__('You have no permission'));
+                }
+            }
+            if ($this->request->isPost())
+            {
+                $params = $this->request->post("row/a");
+                if ($params)
+                {
+                    try
+                    {
+                        //是否采用模型验证
+                        if ($this->modelValidate)
+                        {
+                            $name = basename(str_replace('\\', '/', get_class($this->model)));
+                            $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.edit' : true) : $this->modelValidate;
+                            $row->validate($validate);
+                        }
+                        $type_name= Db::table('hn_product_sort')
+                            ->where('id',$params['type'])
+                            ->find();
+                        $params['type'] = $type_name['name'];
+                        $params['name'] = $params['title'];
+                        $result = $row->allowField(true)->save($params);
+                        if ($result !== false)
+                        {
+                            $this->success();
+                        }
+                        else
+                        {
+                            $this->error($row->getError());
+                        }
+                    }
+                    catch (\think\exception\PDOException $e)
+                    {
+                        $this->error($e->getMessage());
+                    }
+                }
+                $this->error(__('Parameter %s can not be empty', ''));
+            }
+            $this->view->assign("row", $row);
+            return $this->view->fetch();
     }
 
     /**

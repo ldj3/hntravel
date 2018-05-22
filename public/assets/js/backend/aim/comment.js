@@ -5,11 +5,11 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function($, undefine
             // 初始化表格参数配置
             Table.api.init({
                 extend: {
-                    index_url: 'find/special/index',
-                    add_url: 'find/special/add',
-                    edit_url: 'find/special/edit',
-                    del_url: 'find/special/del',
-                    multi_url: 'find/special/multi',
+                    index_url: 'aim/comment/index',
+                    add_url: 'aim/comment/add',
+                    edit_url: 'aim/comment/edit',
+                    del_url: 'aim/comment/del',
+                    multi_url: 'aim/comment/multi',
                     table: 'special',
                 }
             });
@@ -28,9 +28,10 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function($, undefine
                     [
                         { checkbox: true },
                         { field: 'id', title: __('Id') },
-                        { field: 'title', title: __('标题'), align: 'left' },
-                        { field: 'image', title: __('图片'), operate: false, formatter: Table.api.formatter.image },
-                        { field: 'status', title: __('Status'), operate: false, formatter: Table.api.formatter.status },
+                        { field: 'product_id', title: __('商品') },
+                        { field: 'user_name', title: __('用户名')},
+                        { field: 'image', title: __('用户头像'), operate: false, formatter: Table.api.formatter.image },
+                        { field: 'time', title: __('点评时间')},
                         { field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate }
                     ]
                 ]

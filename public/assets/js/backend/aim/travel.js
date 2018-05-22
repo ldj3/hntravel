@@ -5,11 +5,11 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function($, undefine
             // 初始化表格参数配置
             Table.api.init({
                 extend: {
-                    index_url: 'find/strategy/index',
-                    add_url: 'find/strategy/add',
-                    edit_url: 'find/strategy/edit',
-                    del_url: 'find/strategy/del',
-                    multi_url: 'find/strategy/multi',
+                    index_url: 'aim/travel/index',
+                    add_url: 'aim/travel/add',
+                    edit_url: 'aim/travel/edit',
+                    del_url: 'aim/travel/del',
+                    multi_url: 'aim/travel/multi',
                     dragsort_url: '',
                     table: 'strategy',
                 }
@@ -27,13 +27,15 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function($, undefine
                 commonSearch: false,
                 columns: [
                     [
-                        { checkbox: true },
+                    	{ checkbox: true },
                         { field: 'id', title: __('Id') },
-                        { field: 'name', title: __('一级标题'), align: 'left' },
-                        { field: 'title', title: __('二级标题') },
-                        { field: 'sort', title: __('分类') },
-                        { field: 'image', title: __('图片'), operate: false, formatter: Table.api.formatter.image },
-                        { field: 'status', title: __('Status'), operate: false, formatter: Table.api.formatter.status },
+                        { field: 'product_id', title: __('商品') },
+                        { field: 'user_name', title: __('用户名')},
+                        { field: 'user_image', title: __('用户头像'), operate: false, formatter: Table.api.formatter.image },
+                        { field: 'type', title: __('文章分类') },
+                        { field: 'title', title: __('主标题') },
+                        { field: 'second_title', title: __('二级标题') },
+                        { field: 'image', title: __('用户头像'), operate: false, formatter: Table.api.formatter.image },
                         { field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate }
                     ]
                 ]

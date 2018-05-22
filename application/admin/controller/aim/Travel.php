@@ -3,7 +3,7 @@
 namespace app\admin\controller\aim;
 
 use app\common\controller\Backend;
-use fast\Tree;
+use think\Db;
 
 /**
  * 分类管理
@@ -19,7 +19,7 @@ class Travel extends Backend
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = model('Find');
+        $this->model = model('Aimtravel');
     }
 
     /**
@@ -38,18 +38,28 @@ class Travel extends Backend
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $total = $this->model
-                    ->where('place','2')
-                    ->order($sort, $order)
-                    ->count();
-
+            ->where($where)
+            ->order($sort, $order)
+            ->count();
+            
             $list = $this->model
-                    ->where('place','2')
-                    ->order($sort, $order)
-                    ->limit($offset, $limit)
-                    ->select();
-
+            ->where($where)
+            ->order($sort, $order)
+            ->limit($offset, $limit)
+            ->select();
+            
             $result = array("total" => $total, "rows" => $list);
-
+            foreach ($result['rows'] as $key => $value) {
+                $product_name= Db::table('hn_travel_product')
+                    ->where('id',$value['product_id'])
+                    ->find();
+                $tab_name= Db::table('hn_strategy_sort')
+                    ->where('id',$value['type'])
+                    ->find();
+                $result['rows'][$key]['product_id'] = $product_name['name'];
+                $result['rows'][$key]['type'] = $tab_name['name'];
+            }
+            
             return json($result);
         }
         return $this->view->fetch();
@@ -79,9 +89,6 @@ class Travel extends Backend
                         $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.add' : true) : $this->modelValidate;
                         $this->model->validate($validate);
                     }
-                    // print_r($params);exit;
-                    $params['name'] = $params['title'];
-                    $params['place'] = 2;
                     $result = $this->model->allowField(true)->save($params);
 
                     // print_r($result);exit;
@@ -103,6 +110,8 @@ class Travel extends Backend
         }
         return $this->view->fetch();
     }
+    
+    
 
     /**
      * Selectpage搜索
