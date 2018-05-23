@@ -13,7 +13,7 @@ class Index extends Api
 
     protected $noNeedLogin = ['*'];
     protected $noNeedRight = ['*'];
-    const constant = 'http://localhost/hntravel/public';
+    const constant = 'http://12301.sy.hn/';
 
     /**
      * 首页
